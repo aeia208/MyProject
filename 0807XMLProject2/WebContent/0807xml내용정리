@@ -1,0 +1,96 @@
+## XML내용 정리
+<!-- 주석은 HTML주석과 동일 -->
+	*****XML의 목적: 문서 저장 언어(데이터베이스) 
+	
+	XML: 모든 운영체제에 호환성이 좋다.(언어: C, C#, Java 등)
+	
+	XML의 단점
+		1) 태그를 알 수 없다(사용자 정의)
+			: 규정이 된 태그(키워드)는 1개만 존재함 : <xml>
+		2) 사용자 정의 태그 = 시맨틱태그 이용 권장
+	
+	XML문법
+		1) 반드시 최상위 태그를 필요로 한다 (계층 구조) : root를 나타내주는 태그
+			<a>aaa</a>
+			<b>bbb</b> : Error!!
+			
+			<c>
+				<a>aaa</a>
+				<b>bbb</b>
+			</c>			: 정상작동
+			
+		2) 대소문자를 구분한다 (태그는 전체가 소문자여야 한다)
+			<A> != <a>
+			
+		3) 태그 => 알파벳이나, 한글 사용이 가능 - 가급적 영문 알파벳 권장
+				   숫자 사용이 가능하지만, 맨 앞에는 사용 금지
+				   키워드는 사용할 수 없다
+				   특수문자 사용이 가능하다(_, -, ., :)
+		
+		4) 여는 태그, 닫는 태그가 동일해야 한다
+			<a></a> == <a />
+			
+		5) 속성 값 입력 시, 반드시 ""안에 값을 입력해야 한다
+		
+		6) XML태그는 순서를 갖고 있다.
+		
+<!-- 
+	dtd역시 주석 처리는 HTML주석과 동일하다.
+	
+	<member>
+		<list>
+			<name>홍길동</name>
+			<sex>남자</sex>
+			<address>서울</address>
+			<hp>010-1111-1111</hp>
+			<hobby>운동</hobby>
+		</list>
+		<list>
+			<name>홍길동</name>
+			<sex>남자</sex>
+			<address>서울</address>
+			<home>010-1111-1111</home>
+		</list>
+	<member>	
+	
+	<!ELEMENT member> : ELEMENT는 태그 정의
+	
+	태그를 여러번 사용할 때: +(반드시 한 번 이상 사용되어야 함), *(0번 이상: 따라서 안 써도 된다)
+							 ?(한 번 쓰거나, 아예 안 쓰거나) | default(아무것도 안 붙임, 반드시 한번만 사용)
+							 a+
+							 a*
+							 a 
+	#PCDATA의 뜻: 태그와 태그 사이에 문자열 들어감
+-->
+
+<!-- DOCTYPE 뒤에 최상위 태그, 공개된 파일일 경우 PUBLIC, 아니면 SYSTEM, 이후 "참조할 dtd파일의 파일명" -->
+
+
+<!-- XML: 모든 내용을 문자열로 받아야 한다는 단점이 있다.
+		이를 보완한 게 Schema -->
+		
+<!--
+	속성 정의
+		id=""
+		<!ATTLIST>
+		1. 데이터형
+			ID ========== UNIQUE
+			CDATA ======= 일반 문자열(공백 허용) ex. name="hong gil dong" => 정상작동
+			NOTATION ==== 일반 문자열(공백 비허용) ex. name="hong gil dong" => Error!
+			IDREF ======= FOREIGN KEY
+			IDREFS ====== 참조를 여러개 사용 가능
+		2. 제약조건
+			#REQUIRED === 반드시 써야 함(== NOT NULL)
+			#IMPLED ===== NULL허용
+			#FIXED ====== DEFAULT
+			
+		<beans>
+			<bean id="a" class=""/>
+			<bean id="b" class=""/>
+			<bean id="c" class=""/>
+			<bean id="d" class=""/>
+		</beans>
+			: id는 중복 비허용, class 는 공백 허용?
+			bean은 empty tag
+		
+-->

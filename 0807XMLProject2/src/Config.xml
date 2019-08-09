@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- Connection, PreparedStatement -->
+<configuration>
+<!-- (properties?, settings?, typeAliases?, typeHandlers?, objectFactory?, 
+ objectWrapperFactory?, reflectorFactory?, plugins?, environments?, databaseIdProvider?, mappers?) -->
+	<!-- VO 등록 -->
+	<typeAliases> <!-- (typeAlias*, package*) -->
+		<typeAlias type="com.sist.dao.StudentVO"/>
+	</typeAliases>
+	
+	<!-- Connection: Database정보(driverClassName, url, username, password), Default: maxActive=8, maxIdel=8 -->
+	<environments default="development"> <!-- (environment+) -->
+		<environment id="development"> <!-- (transactionManager, dataSource) -->
+		<!-- environments default="값과" environment id="값은" 동일해야 한다 -->
+			<transactionManager type="JDBC"> <!-- (property*) -->
+			<!-- 
+				transaction: 일괄처리 = COMMIT, ROLLBACK( col2 : col2까지만 취소), SAVEPOINT
+				시스템에 맡김 : transactionManager type="JDBC"
+				직접 관리 : transactionManager type="MANAGER"
+			 -->
+			</transactionManager>
+			<dataSource type="POOLED"> <!-- (property*) -->
+			<!-- 방식 2가지
+				 일반JDBC : UNPOOLED
+				 DBCP(Connection Pool 사용) : POOLED -->
+			<!-- DataBase 정보 전송 (getConnection(), disConnection()) -->
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:ORCL"/>
+				<property name="username" value="scott"/>
+				<property name="password" value="tiger"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- Statement : SQL문장 -->
+	<mappers> <!-- (mapper*, package*) -->
+		<!-- include -->
+		<mapper resource="com/sist/dao/student-mapper.xml" /> <!-- mapper resource=""의 값은 경로명이므로 디렉토리를 .이 아닌 /로 구분한다 -->
+	</mappers>
+</configuration>
