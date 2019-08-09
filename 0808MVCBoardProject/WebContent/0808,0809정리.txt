@@ -1,0 +1,157 @@
+## atMyBatisDML
+	DML : INSERT, UPDATE, DELETE => parameterType 설정
+	      FIND => UPDATE board SET name=?, subject=?, ...
+	      		  name=#{name} = ${}
+	      		  # : 일반데이터
+	      		  $ : table명, column명
+	      SEQUENCE => <selectKey>
+	      SELECT <select>
+	      INSERT <insert>
+	      UPDATE <update>
+	      DELETE <delete>
+	      <sql> : 중복되는 SQL문장 처리 시 사용
+	      <statement> : 여러개의 문장 동시 수행 시 사용
+	      
+## interface, 추상클래스
+	목적) 관련된 클래스를 모아서 관리할 목적
+	1) 미완성 클래스 => 프로그래머가 완성해서 사용
+	2) interface : 모든 메서드를 구현(1.7이후)
+	   =========
+	   interface A {
+	   		int a; // 상수형 변수여야 함: int a = 10; (== public static final int a)
+	   		void display();
+	   }  ==> Error! 
+	   
+## 오버라이딩
+	1) 상속(extends, implements)
+	2) 메서드명이 동일
+	3) 리턴형, 매개변수가 동일
+	4) 축소는 불가능, 확장은 가능 (접근지정어)
+	   private < default < protected < public
+	   
+## 예외처리
+	목적) 비정상종료를 방지하고 정상 상태를 유지
+	=> 기능: 사전에 에러를 방지하는 프로그램
+	=> 방식: 복구(try~catch), 회피(throws)
+	=> 상속도
+	   Object
+	     |
+	  Throwable
+	  |       |
+    Error   Exception
+            |       |
+  CheckException  UnCheckException
+       |                         | 
+ IOException                 RuntimeException
+ SQLException                    | 
+ ClassNotFoundException        NumberFormatException
+ MalformURLException           NullPointerException
+                               ArrayIndexOutOfBoundsException
+                               ClasscastException
+                               
+## 상속
+	class		->	class (extends)
+	interface	->	interface (extends)
+	interface	->	class (implements)
+	class		->	interface (XXXXX)
+	
+## MVC 작동 순서
+요청 ==> DispatcherServlet ===> Model ===> Dis  ==> jsp	
+	
+## DispatcherServlet => 클래스등록 파일 전송
+
+## XML 파싱 유형
+	1) dom : (단점) 속도가 느리다 - XML을 읽어서 메모리 트리형태로 저장한 후 처리
+			 (장점) 수정, 삭제, 추가가 가능
+	2) sax : framework (sax) -> Spring, Mybatis	
+			 한줄씩 읽어서 데이터만 추출함
+	
+## SAX 읽는 
+	<?xml version="1.0" encoding="UTF-8"?> ==> startDocument()메서드 호출 - 문서가 시작됨
+	<book> => startElement()메서드 호출 - 태그가 시작되었다는 의미
+		<list> => startElement()
+			<title> => startElement()
+				aaa => characters()
+			</title> => endElement()
+			<price> => startElement()
+				1000 => characters()
+			</price> => endElement()
+		</list> => endElement()
+	</book> => endDocument()
+	
+## XML가져오는
+	JAXP = DOM/SAX
+	JAXB = 대용량(빅데이터)
+		
+## DispatcherServlet(Controller)
+	1. 요청받기
+	----------
+	2. 요청을 처리 -> Model을 찾는다 -> 클래스 WebApplicationContext
+	3. 요청 처리후에 결과값 가지고 오기
+	4. 결과값 전송하기 위해서 JSP -> 클래스 ViewResolver
+	----------
+	5. 찾은 JSP (request전송)
+	
+## WebApplicationContext
+	역할: Model클래스 관리
+
+## ML=> HTML, XML, WML(**** 모바일), HDML
+
+## 팩토리패턴 : 만들어 둔 클래스를 모아 뒀다가 필요할 때 가져다 씀 - Spring이용
+
+## MyBatis Default ConnectionPool
+	: Connection 최대 : 8개
+	
+## select
+	resultType : 실행 결과값의 타입
+	parameterType : 매개변수..라기보다는 ?에 들어갈 값의 타입
+	? : #{(키)값/이름 }
+	#{}# : iBatis에서 사용(iBatis는 구글이 인수하면서 myBatis로 변경, 즉, iBatis는 2.x버전, myBatis는 3.x버전)
+	
+## 함수 처리
+	TO_CHAR(regdate, 'YYYY-MM-DD') as dbday => myBatis에서 함수는 값을 처리할 수 없다
+											   vo의 변수명으로 별칭 지정하여 값 처리
+											   
+## mapper 실행
+	* session.selectOne("boardTotalPage");
+						================
+						실행할 id
+	* session.selectOne("boardDetailData", no);
+						=================  ==
+						실행할 id          parameter
+	* session.selectList("boardListData", map);
+		: 받아올 값이 변수 한 개에 들어갈 값 하나이면 selectOne,
+		  받아올 값이 많다면 selectList	
+	* selectOne의 반환형은 Object인데? Object가 최상위 클래스인데?
+		: 자동으로 returnType에 맞춰 형변환이 되도록 맞춰짐
+	* session.update(); / session.delete(); / session.insert();
+		: 완료 후 session.commit(); 필수! (autoCommit 아님!)
+	
+##
+	1. 데이터 읽기 (java) => Model
+	=================================== 1~2 사이 전송을 하는 클래스 이용 (Servlet) => Controller
+	2. 읽은 데이터 출력 (jsp) => View
+	
+## 프로젝트의 시작점: web.xml
+	
+## 다중 조건 검색 시 
+WHERE <if test="name!=null> name=? </if>
+	  <if test="sex!=null> AND sex=? </if>
+	  <if test="addr!=null> AND addr=? </if>
+	  <if test="tel!=null> AND tel=? </if>
+	  <if test="email!=null> AND email=? </if>
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
